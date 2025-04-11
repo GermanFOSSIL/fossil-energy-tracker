@@ -1,10 +1,12 @@
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { getProjects } from '@/services/projectService';
 import { useQuery } from '@tanstack/react-query';
+import { translateProjectStatus } from '@/services/projectService';
 
 interface ProjectItemProps {
   name: string;
@@ -14,6 +16,8 @@ interface ProjectItemProps {
 }
 
 const ProjectItem = ({ name, progress, status, dueDate }: ProjectItemProps) => {
+  const { i18n } = useTranslation();
+  
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
@@ -29,6 +33,9 @@ const ProjectItem = ({ name, progress, status, dueDate }: ProjectItemProps) => {
     }
   };
 
+  // Translate status based on the current language
+  const translatedStatus = translateProjectStatus(status, i18n);
+
   return (
     <div className="mb-4 border-b pb-4 last:border-0 last:pb-0">
       <div className="flex items-center justify-between">
@@ -36,10 +43,10 @@ const ProjectItem = ({ name, progress, status, dueDate }: ProjectItemProps) => {
           <div className="flex items-center gap-2">
             <span className="font-medium">{name}</span>
             <Badge className={getStatusColor(status)} variant="outline">
-              {status.replace('-', ' ')}
+              {translatedStatus}
             </Badge>
           </div>
-          {dueDate && <span className="text-xs text-gray-500">Due: {dueDate}</span>}
+          {dueDate && <span className="text-xs text-gray-500">{i18n.t('projects.endDate')}: {dueDate}</span>}
         </div>
         <span className="text-sm font-medium">{progress}%</span>
       </div>
@@ -56,9 +63,11 @@ interface ProjectOverviewProps {
 }
 
 const ProjectOverview = ({ 
-  title = "Project Overview", 
-  description = "Current status and progress of active projects" 
+  title, 
+  description
 }: ProjectOverviewProps) => {
+  const { t, i18n } = useTranslation();
+  
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjects
@@ -82,35 +91,43 @@ const ProjectOverview = ({
     }
   };
 
+  // Format date based on current language
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return undefined;
+    
+    const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+    return new Date(dateString).toLocaleDateString(locale, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
   // Format projects for display
   const formattedProjects = projects?.map(project => ({
     name: project.name,
     progress: project.progress || 0,
     status: mapStatus(project.status),
-    dueDate: project.end_date ? new Date(project.end_date).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    }) : undefined
+    dueDate: formatDate(project.end_date)
   })) || [];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle>{title || t('dashboard.projectOverview')}</CardTitle>
+        <CardDescription>{description || t('dashboard.projectStatus')}</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="py-8 text-center text-gray-500">Loading projects...</div>
+          <div className="py-8 text-center text-gray-500">{t('common.loading')}</div>
         ) : error ? (
-          <div className="py-8 text-center text-red-500">Error loading projects</div>
+          <div className="py-8 text-center text-red-500">{t('errors.generic')}</div>
         ) : formattedProjects.length === 0 ? (
-          <div className="py-8 text-center text-gray-500">No projects found</div>
+          <div className="py-8 text-center text-gray-500">{t('common.noResults')}</div>
         ) : (
-          formattedProjects.map((project) => (
+          formattedProjects.map((project, index) => (
             <ProjectItem
-              key={project.name}
+              key={index}
               name={project.name}
               progress={project.progress}
               status={project.status}

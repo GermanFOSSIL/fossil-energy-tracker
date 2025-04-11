@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
@@ -76,6 +77,8 @@ const SidebarGroup = ({ icon, label, children }: SidebarGroupProps) => {
 };
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
+  const { t } = useTranslation();
+  
   return (
     <div
       className={cn(
@@ -88,29 +91,29 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       <div className="flex flex-col gap-1 p-3">
         <SidebarItem
           icon={<LayoutDashboard className="h-5 w-5" />}
-          label="Dashboard"
+          label={t('navigation.dashboard')}
           path="/dashboard"
         />
 
         <SidebarGroup
           icon={<Workflow className="h-5 w-5" />}
-          label="Project Management"
+          label={t('navigation.projectManagement')}
         >
           <SidebarItem
             icon={<Workflow className="h-4 w-4" />}
-            label="Projects"
+            label={t('navigation.projects')}
             path="/projects"
             isNested
           />
           <SidebarItem
             icon={<Layers className="h-4 w-4" />}
-            label="Systems"
+            label={t('navigation.systems')}
             path="/systems"
             isNested
           />
           <SidebarItem
             icon={<Layers className="h-4 w-4" />}
-            label="Subsystems"
+            label={t('navigation.subsystems')}
             path="/subsystems"
             isNested
           />
@@ -118,17 +121,17 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
         <SidebarGroup
           icon={<ClipboardList className="h-5 w-5" />}
-          label="Documentation"
+          label={t('navigation.documentation')}
         >
           <SidebarItem
             icon={<ClipboardList className="h-4 w-4" />}
-            label="ITRs"
+            label={t('navigation.itrs')}
             path="/itrs"
             isNested
           />
           <SidebarItem
             icon={<FileCheck className="h-4 w-4" />}
-            label="Test Packs"
+            label={t('navigation.testPacks')}
             path="/test-packs"
             isNested
           />
@@ -136,19 +139,19 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
         <SidebarItem
           icon={<Users className="h-5 w-5" />}
-          label="Users"
+          label={t('navigation.users')}
           path="/users"
         />
 
         <SidebarItem
           icon={<FileBarChart className="h-5 w-5" />}
-          label="Reports"
+          label={t('navigation.reports')}
           path="/reports"
         />
 
         <SidebarItem
           icon={<Settings className="h-5 w-5" />}
-          label="Settings"
+          label={t('navigation.settings')}
           path="/settings"
         />
       </div>

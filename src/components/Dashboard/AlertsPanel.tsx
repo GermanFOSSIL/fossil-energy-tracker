@@ -1,4 +1,5 @@
 
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +14,8 @@ interface AlertItemProps {
 }
 
 const AlertItem = ({ message, level, timestamp, entity }: AlertItemProps) => {
+  const { i18n } = useTranslation();
+  
   const getIcon = (level: string) => {
     switch (level) {
       case 'info':
@@ -43,6 +46,17 @@ const AlertItem = ({ message, level, timestamp, entity }: AlertItemProps) => {
     }
   };
 
+  // Format date based on current language
+  const formatTimestamp = (timestamp: string) => {
+    const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+    return new Date(timestamp).toLocaleString(locale, {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <div className="mb-3 flex items-start gap-3 border-b pb-3 last:border-0 last:pb-0">
       <div className="mt-0.5 rounded-full bg-gray-100 p-1">
@@ -58,7 +72,7 @@ const AlertItem = ({ message, level, timestamp, entity }: AlertItemProps) => {
           </div>
         </div>
         <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
-          <span>{timestamp}</span>
+          <span>{formatTimestamp(timestamp)}</span>
           {entity && (
             <>
               <span>•</span>
@@ -77,9 +91,11 @@ interface AlertsPanelProps {
 }
 
 const AlertsPanel = ({ 
-  title = "Alerts & Notifications", 
-  description = "Recent alerts and notifications from your projects" 
+  title,
+  description
 }: AlertsPanelProps) => {
+  const { t } = useTranslation();
+  
   const { data: alerts, isLoading, error } = useQuery({
     queryKey: ['alerts'],
     queryFn: () => getAlerts(5)
@@ -88,14 +104,14 @@ const AlertsPanel = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle>{title || t('dashboard.alerts')}</CardTitle>
+        <CardDescription>{description || t('dashboard.alertsDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="py-4 text-center text-gray-500">Loading alerts...</div>
+          <div className="py-4 text-center text-gray-500">{t('common.loading')}</div>
         ) : error ? (
-          <div className="py-4 text-center text-red-500">Error loading alerts</div>
+          <div className="py-4 text-center text-red-500">{t('errors.generic')}</div>
         ) : alerts && alerts.length > 0 ? (
           alerts.map((alert: AlertType) => (
             <AlertItem
@@ -107,7 +123,7 @@ const AlertsPanel = ({
             />
           ))
         ) : (
-          <div className="py-4 text-center text-gray-500">No alerts found</div>
+          <div className="py-4 text-center text-gray-500">{t('common.noResults')}</div>
         )}
       </CardContent>
     </Card>

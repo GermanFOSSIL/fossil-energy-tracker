@@ -1,6 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/types/project";
+import { i18n } from "i18next";
 
 export async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase
@@ -54,7 +55,7 @@ export async function updateProject(id: string, projectData: Partial<Project>): 
   
   const { data, error } = await supabase
     .from('projects')
-    .update(projectData)
+    .update(projectData as { name: string })
     .eq('id', id)
     .select()
     .single();
@@ -79,4 +80,19 @@ export async function deleteProject(id: string): Promise<boolean> {
   }
   
   return true;
+}
+
+// Helper function to translate project status based on current language
+export function translateProjectStatus(status: string | undefined, i18n: i18n): string {
+  if (!status) return '';
+  
+  const statusKey = status.toLowerCase().replace(/-/g, '');
+  const translations: Record<string, string> = {
+    'pending': i18n.t('projects.statuses.pending'),
+    'inprogress': i18n.t('projects.statuses.inProgress'),
+    'completed': i18n.t('projects.statuses.completed'),
+    'delayed': i18n.t('projects.statuses.delayed')
+  };
+  
+  return translations[statusKey] || status;
 }

@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   Bell, 
   Menu, 
@@ -17,12 +18,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface NavbarProps {
   toggleSidebar: () => void;
 }
 
 const Navbar = ({ toggleSidebar }: NavbarProps) => {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState([
     { id: 1, message: "Test Pack T-001 is overdue", time: "10 minutes ago" },
     { id: 2, message: "ITR I-123 has been signed", time: "1 hour ago" },
@@ -41,8 +44,8 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           <Menu className="h-5 w-5" />
         </Button>
         <Link to="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-fossil-800">FOSSIL</span>
-          <span className="text-lg font-medium text-fossil-600">Energies</span>
+          <span className="text-xl font-bold text-fossil-800">{t('common.appName').split(' ')[0]}</span>
+          <span className="text-lg font-medium text-fossil-600">{t('common.appName').split(' ')[1]}</span>
         </Link>
       </div>
 
@@ -53,10 +56,12 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
           </div>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder={t('common.search')}
             className="w-64 rounded-md border pl-10 pr-4 py-2 text-sm focus:border-fossil-500 focus:outline-none focus:ring-1 focus:ring-fossil-500"
           />
         </div>
+
+        <LanguageSwitcher />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -70,7 +75,7 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('dashboard.alerts')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {notifications.map((notification) => (
               <DropdownMenuItem key={notification.id} className="flex flex-col items-start py-2">
@@ -80,7 +85,7 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="justify-center text-sm font-medium text-fossil-600">
-              View all notifications
+              {t('common.seeAll')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -93,17 +98,17 @@ const Navbar = ({ toggleSidebar }: NavbarProps) => {
               </div>
               <div className="hidden md:block text-left">
                 <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-gray-500">Administrator</p>
+                <p className="text-xs text-gray-500">{t('users.roles.admin')}</p>
               </div>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('settings.profile.title')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Projects</DropdownMenuItem>
+            <DropdownMenuItem>{t('settings.profile.title')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('settings.title')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('projects.title')}</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-500">Log out</DropdownMenuItem>
           </DropdownMenuContent>

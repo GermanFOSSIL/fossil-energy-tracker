@@ -1,6 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { Json } from "@/integrations/supabase/types";
+import i18next from "i18next";
 
 interface ReportRecipient {
   id: string;
@@ -89,13 +90,15 @@ export async function getReportSchedule(): Promise<ReportSchedule | null> {
   if (!data) return null;
   
   // Parse the JSON settings string into our expected format
+  const settings = typeof data.settings === 'string' 
+    ? JSON.parse(data.settings) 
+    : data.settings as unknown as ReportScheduleSettings;
+    
   return {
     id: data.id,
     created_at: data.created_at,
     updated_at: data.updated_at,
-    settings: typeof data.settings === 'string' 
-      ? JSON.parse(data.settings) 
-      : data.settings as unknown as ReportScheduleSettings
+    settings
   };
 }
 
@@ -103,11 +106,14 @@ export async function updateReportSchedule(settings: ReportScheduleSettings): Pr
   // Check if a schedule exists
   const existingSchedule = await getReportSchedule();
   
+  // Convert ReportScheduleSettings to a format compatible with Json
+  const jsonSettings = settings as unknown as Json;
+  
   if (existingSchedule) {
-    // Update existing schedule - convert settings to Json type for Supabase
+    // Update existing schedule
     const { data, error } = await supabase
       .from('report_schedule')
-      .update({ settings: settings as unknown as Json })
+      .update({ settings: jsonSettings })
       .eq('id', existingSchedule.id)
       .select()
       .single();
@@ -117,19 +123,22 @@ export async function updateReportSchedule(settings: ReportScheduleSettings): Pr
       throw error;
     }
     
+    // Convert back from Json to ReportScheduleSettings
+    const updatedSettings = typeof data.settings === 'string' 
+      ? JSON.parse(data.settings) 
+      : data.settings as unknown as ReportScheduleSettings;
+      
     return {
       id: data.id,
       created_at: data.created_at,
       updated_at: data.updated_at,
-      settings: typeof data.settings === 'string' 
-        ? JSON.parse(data.settings) 
-        : data.settings as unknown as ReportScheduleSettings
+      settings: updatedSettings
     };
   } else {
-    // Create a new schedule - convert settings to Json type for Supabase
+    // Create a new schedule
     const { data, error } = await supabase
       .from('report_schedule')
-      .insert({ settings: settings as unknown as Json })
+      .insert({ settings: jsonSettings })
       .select()
       .single();
     
@@ -138,13 +147,16 @@ export async function updateReportSchedule(settings: ReportScheduleSettings): Pr
       throw error;
     }
     
+    // Convert back from Json to ReportScheduleSettings
+    const newSettings = typeof data.settings === 'string' 
+      ? JSON.parse(data.settings) 
+      : data.settings as unknown as ReportScheduleSettings;
+      
     return {
       id: data.id,
       created_at: data.created_at,
       updated_at: data.updated_at,
-      settings: typeof data.settings === 'string' 
-        ? JSON.parse(data.settings) 
-        : data.settings as unknown as ReportScheduleSettings
+      settings: newSettings
     };
   }
 }
@@ -157,9 +169,35 @@ export async function sendReportEmail(
   message: string, 
   attachmentType?: 'pdf' | 'excel'
 ): Promise<boolean> {
+  // Get current language for email templates
+  const emailSubject = i18next.t('emails.report.subject');
+  const greeting = i18next.t('emails.report.greeting');
+  const currentDate = new Date().toLocaleDateString(
+    i18next.language === 'es' ? 'es-ES' : 'en-US', 
+    { year: 'numeric', month: 'long', day: 'numeric' }
+  );
+  const intro = i18next.t('emails.report.intro', { date: currentDate });
+  const content = i18next.t('emails.report.content');
+  const outro = i18next.t('emails.report.outro');
+  const footer = i18next.t('emails.report.footer');
+  
+  const emailBody = `
+    ${greeting}
+    
+    ${intro}
+    
+    ${content}
+    
+    ${message}
+    
+    ${outro}
+    
+    ${footer}
+  `;
+  
   console.log(`Sending report email to ${recipients.join(', ')}`);
-  console.log(`Subject: ${subject}`);
-  console.log(`Message: ${message}`);
+  console.log(`Subject: ${emailSubject}`);
+  console.log(`Message: ${emailBody}`);
   console.log(`Attachment type: ${attachmentType || 'none'}`);
   
   // In a real implementation, this would call an edge function

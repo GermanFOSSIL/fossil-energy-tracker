@@ -139,40 +139,72 @@ export async function deleteUser(id: string): Promise<boolean> {
   return true;
 }
 
+// Since we don't have direct access to the user_roles table in the schema,
+// we'll implement role management through the profiles table's metadata field
 export async function getUserRoles(userId: string): Promise<UserRole[]> {
-  const { data, error } = await supabase
-    .from('user_roles')
+  // Get the user profile
+  const { data: user, error } = await supabase
+    .from('profiles')
     .select('*')
-    .eq('user_id', userId);
+    .eq('id', userId)
+    .single();
   
   if (error) {
     console.error("Error fetching user roles:", error);
     throw error;
   }
   
-  return data || [];
+  // If no metadata or roles, return empty array
+  if (!user || !user.metadata || !user.metadata.roles) {
+    return [];
+  }
+  
+  return user.metadata.roles as UserRole[];
 }
 
 export async function assignRole(userId: string, role: 'admin' | 'manager' | 'inspector' | 'viewer'): Promise<UserRole> {
-  // Check if the user already has this role
-  const { data: existingRole } = await supabase
-    .from('user_roles')
+  // Get the user first
+  const { data: user, error: userError } = await supabase
+    .from('profiles')
     .select('*')
-    .eq('user_id', userId)
-    .eq('role', role)
-    .maybeSingle();
+    .eq('id', userId)
+    .single();
   
+  if (userError) {
+    console.error("Error fetching user:", userError);
+    throw userError;
+  }
+  
+  // Get current roles or initialize empty array
+  const currentRoles = (user.metadata && user.metadata.roles) ? user.metadata.roles : [];
+  
+  // Check if the user already has this role
+  const existingRole = currentRoles.find((r: UserRole) => r.role === role);
   if (existingRole) {
     return existingRole;
   }
   
-  // Assign the new role
+  // Create new role
+  const newRole = {
+    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    user_id: userId,
+    role,
+    created_at: new Date().toISOString()
+  };
+  
+  // Add the new role
+  const updatedRoles = [...currentRoles, newRole];
+  
+  // Update user metadata
   const { data, error } = await supabase
-    .from('user_roles')
-    .insert({
-      user_id: userId,
-      role
+    .from('profiles')
+    .update({
+      metadata: {
+        ...user.metadata,
+        roles: updatedRoles
+      }
     })
+    .eq('id', userId)
     .select()
     .single();
   
@@ -184,19 +216,57 @@ export async function assignRole(userId: string, role: 'admin' | 'manager' | 'in
   // Log the activity
   await logDatabaseActivity(
     'ASSIGN_ROLE',
-    'user_roles',
-    data.id,
-    { user_id: userId, role }
+    'profiles',
+    userId,
+    { role_id: newRole.id, role }
   );
   
-  return data;
+  return newRole;
 }
 
 export async function removeRole(userRoleId: string): Promise<boolean> {
+  // Find the user with this role
+  const { data: users, error: usersError } = await supabase
+    .from('profiles')
+    .select('*');
+  
+  if (usersError) {
+    console.error("Error fetching users:", usersError);
+    throw usersError;
+  }
+  
+  // Find the user that has this role ID
+  let userWithRole = null;
+  let roleToRemove = null;
+  let updatedRoles = [];
+  
+  for (const user of users) {
+    if (user.metadata && user.metadata.roles) {
+      const roleIndex = user.metadata.roles.findIndex((r: UserRole) => r.id === userRoleId);
+      if (roleIndex >= 0) {
+        userWithRole = user;
+        roleToRemove = user.metadata.roles[roleIndex];
+        updatedRoles = [...user.metadata.roles];
+        updatedRoles.splice(roleIndex, 1);
+        break;
+      }
+    }
+  }
+  
+  if (!userWithRole || !roleToRemove) {
+    throw new Error("Role not found");
+  }
+  
+  // Update the user's roles
   const { error } = await supabase
-    .from('user_roles')
-    .delete()
-    .eq('id', userRoleId);
+    .from('profiles')
+    .update({
+      metadata: {
+        ...userWithRole.metadata,
+        roles: updatedRoles
+      }
+    })
+    .eq('id', userWithRole.id);
   
   if (error) {
     console.error("Error removing role:", error);
@@ -206,9 +276,9 @@ export async function removeRole(userRoleId: string): Promise<boolean> {
   // Log the activity
   await logDatabaseActivity(
     'REMOVE_ROLE',
-    'user_roles',
-    userRoleId,
-    {}
+    'profiles',
+    userWithRole.id,
+    { role_id: userRoleId }
   );
   
   return true;
