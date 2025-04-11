@@ -1,7 +1,10 @@
 
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { getProjects } from '@/services/projectService';
+import { useQuery } from '@tanstack/react-query';
 
 interface ProjectItemProps {
   name: string;
@@ -47,40 +50,6 @@ const ProjectItem = ({ name, progress, status, dueDate }: ProjectItemProps) => {
   );
 };
 
-// Mock data - will be replaced with real API data
-const projects = [
-  {
-    name: 'Project Alpha',
-    progress: 45,
-    status: 'in-progress' as const,
-    dueDate: 'Aug 30, 2025',
-  },
-  {
-    name: 'System 1A',
-    progress: 70,
-    status: 'in-progress' as const,
-    dueDate: 'Jun 15, 2025',
-  },
-  {
-    name: 'System 1B',
-    progress: 30,
-    status: 'in-progress' as const,
-    dueDate: 'Jul 20, 2025',
-  },
-  {
-    name: 'Subsystem 1A-1',
-    progress: 100,
-    status: 'completed' as const,
-    dueDate: 'May 15, 2025',
-  },
-  {
-    name: 'Subsystem 1A-2',
-    progress: 60,
-    status: 'in-progress' as const,
-    dueDate: 'Jun 15, 2025',
-  },
-];
-
 interface ProjectOverviewProps {
   title?: string;
   description?: string;
@@ -90,6 +59,41 @@ const ProjectOverview = ({
   title = "Project Overview", 
   description = "Current status and progress of active projects" 
 }: ProjectOverviewProps) => {
+  const { data: projects, isLoading, error } = useQuery({
+    queryKey: ['projects'],
+    queryFn: getProjects
+  });
+
+  // Helper function to map Supabase status to our status types
+  const mapStatus = (status: string): 'pending' | 'in-progress' | 'completed' | 'delayed' => {
+    switch (status?.toLowerCase()) {
+      case 'complete':
+      case 'completed':
+        return 'completed';
+      case 'inprogress':
+      case 'in-progress':
+        return 'in-progress';
+      case 'pending':
+        return 'pending';
+      case 'delayed':
+        return 'delayed';
+      default:
+        return 'in-progress';
+    }
+  };
+
+  // Format projects for display
+  const formattedProjects = projects?.map(project => ({
+    name: project.name,
+    progress: project.progress || 0,
+    status: mapStatus(project.status),
+    dueDate: project.end_date ? new Date(project.end_date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }) : undefined
+  })) || [];
+
   return (
     <Card>
       <CardHeader>
@@ -97,15 +101,23 @@ const ProjectOverview = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        {projects.map((project) => (
-          <ProjectItem
-            key={project.name}
-            name={project.name}
-            progress={project.progress}
-            status={project.status}
-            dueDate={project.dueDate}
-          />
-        ))}
+        {isLoading ? (
+          <div className="py-8 text-center text-gray-500">Loading projects...</div>
+        ) : error ? (
+          <div className="py-8 text-center text-red-500">Error loading projects</div>
+        ) : formattedProjects.length === 0 ? (
+          <div className="py-8 text-center text-gray-500">No projects found</div>
+        ) : (
+          formattedProjects.map((project) => (
+            <ProjectItem
+              key={project.name}
+              name={project.name}
+              progress={project.progress}
+              status={project.status}
+              dueDate={project.dueDate}
+            />
+          ))
+        )}
       </CardContent>
     </Card>
   );

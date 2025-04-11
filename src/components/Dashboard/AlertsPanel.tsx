@@ -1,16 +1,18 @@
 
+import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Bell, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
+import { getAlerts, Alert as AlertType } from '@/services/alertService';
 
-interface AlertProps {
+interface AlertItemProps {
   message: string;
   level: 'info' | 'warning' | 'error' | 'success';
   timestamp: string;
   entity?: string;
 }
 
-const AlertItem = ({ message, level, timestamp, entity }: AlertProps) => {
+const AlertItem = ({ message, level, timestamp, entity }: AlertItemProps) => {
   const getIcon = (level: string) => {
     switch (level) {
       case 'info':
@@ -69,34 +71,6 @@ const AlertItem = ({ message, level, timestamp, entity }: AlertProps) => {
   );
 };
 
-// Mock data - will be replaced with real API data
-const alerts = [
-  {
-    message: 'Test Pack T-001 is overdue',
-    level: 'error' as const,
-    timestamp: '10 minutes ago',
-    entity: 'ITR-1A-201',
-  },
-  {
-    message: 'ITR I-123 approaching deadline',
-    level: 'warning' as const,
-    timestamp: '1 hour ago',
-    entity: 'System 1A',
-  },
-  {
-    message: 'New system added to Project Alpha',
-    level: 'info' as const,
-    timestamp: '3 hours ago',
-    entity: 'Project Alpha',
-  },
-  {
-    message: 'Subsystem 1A-1 completed successfully',
-    level: 'success' as const,
-    timestamp: '1 day ago',
-    entity: 'System 1A',
-  },
-];
-
 interface AlertsPanelProps {
   title?: string;
   description?: string;
@@ -106,6 +80,11 @@ const AlertsPanel = ({
   title = "Alerts & Notifications", 
   description = "Recent alerts and notifications from your projects" 
 }: AlertsPanelProps) => {
+  const { data: alerts, isLoading, error } = useQuery({
+    queryKey: ['alerts'],
+    queryFn: () => getAlerts(5)
+  });
+
   return (
     <Card>
       <CardHeader>
@@ -113,15 +92,23 @@ const AlertsPanel = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        {alerts.map((alert, index) => (
-          <AlertItem
-            key={index}
-            message={alert.message}
-            level={alert.level}
-            timestamp={alert.timestamp}
-            entity={alert.entity}
-          />
-        ))}
+        {isLoading ? (
+          <div className="py-4 text-center text-gray-500">Loading alerts...</div>
+        ) : error ? (
+          <div className="py-4 text-center text-red-500">Error loading alerts</div>
+        ) : alerts && alerts.length > 0 ? (
+          alerts.map((alert: AlertType) => (
+            <AlertItem
+              key={alert.id}
+              message={alert.message}
+              level={alert.level}
+              timestamp={alert.timestamp}
+              entity={alert.entity}
+            />
+          ))
+        ) : (
+          <div className="py-4 text-center text-gray-500">No alerts found</div>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { 
   LayoutDashboard, 
   ClipboardList, 
@@ -18,13 +19,55 @@ import KPICard from '@/components/Dashboard/KPICard';
 import GanttChart from '@/components/Dashboard/GanttChart';
 import ProjectOverview from '@/components/Dashboard/ProjectOverview';
 import AlertsPanel from '@/components/Dashboard/AlertsPanel';
+import { getProjects } from '@/services/projectService';
+import { getSystems } from '@/services/systemService';
+import { getItrs } from '@/services/itrService';
+import { getTestPacks } from '@/services/testPackService';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
 
+  // Fetch data for KPI cards
+  const { data: projects, isLoading: projectsLoading } = useQuery({
+    queryKey: ['projects'],
+    queryFn: getProjects
+  });
+
+  const { data: systems, isLoading: systemsLoading } = useQuery({
+    queryKey: ['systems'],
+    queryFn: () => getSystems()
+  });
+
+  const { data: itrs, isLoading: itrsLoading } = useQuery({
+    queryKey: ['itrs'],
+    queryFn: () => getItrs()
+  });
+
+  const { data: testPacks, isLoading: testPacksLoading } = useQuery({
+    queryKey: ['testPacks'],
+    queryFn: () => getTestPacks()
+  });
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  // Calculate KPI metrics
+  const activeProjects = projects?.filter(p => p.status !== 'completed')?.length || 0;
+  
+  const itrStats = {
+    total: itrs?.length || 0,
+    pending: itrs?.filter(i => i.status === 'pending')?.length || 0,
+    inProgress: itrs?.filter(i => i.status === 'inprogress')?.length || 0,
+    completed: itrs?.filter(i => i.status === 'complete')?.length || 0,
+  };
+  
+  const testPackStats = {
+    total: testPacks?.length || 0,
+    pending: testPacks?.filter(tp => tp.estado === 'pendiente')?.length || 0,
+    inProgress: testPacks?.filter(tp => tp.estado !== 'pendiente' && tp.estado !== 'listo')?.length || 0,
+    completed: testPacks?.filter(tp => tp.estado === 'listo')?.length || 0,
   };
 
   return (
@@ -53,30 +96,30 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             <KPICard
               title="Active Projects"
-              value={3}
+              value={activeProjects}
               icon={<LayoutDashboard className="h-5 w-5" />}
-              change={{ value: 20, isPositive: true }}
-              footer="Total of 3 active projects"
+              change={{ value: 0, isPositive: true }}
+              footer={`Total of ${activeProjects} active projects`}
             />
             <KPICard
               title="ITRs"
-              value={153}
+              value={itrStats.total}
               icon={<ClipboardList className="h-5 w-5" />}
-              description="45 pending, 78 in progress, 30 completed"
-              footer="12 ITRs pending approval"
+              description={`${itrStats.pending} pending, ${itrStats.inProgress} in progress, ${itrStats.completed} completed`}
+              footer={`${itrStats.pending} ITRs pending approval`}
             />
             <KPICard
               title="Test Packs"
-              value={57}
+              value={testPackStats.total}
               icon={<FileCheck className="h-5 w-5" />}
-              description="15 pending, 32 in progress, 10 completed"
-              change={{ value: 5, isPositive: true }}
+              description={`${testPackStats.pending} pending, ${testPackStats.inProgress} in progress, ${testPackStats.completed} completed`}
+              change={{ value: 0, isPositive: true }}
             />
             <KPICard
-              title="Team Members"
-              value={24}
+              title="Systems"
+              value={systems?.length || 0}
               icon={<Users className="h-5 w-5" />}
-              description="4 admins, 8 supervisors, 12 technicians"
+              description={`${systems?.length || 0} systems across ${activeProjects} active projects`}
             />
           </div>
 
