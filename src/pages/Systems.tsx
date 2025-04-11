@@ -16,7 +16,7 @@ const Systems = () => {
 
   const { data: systems, isLoading } = useQuery({
     queryKey: ['systems'],
-    queryFn: getSystems,
+    queryFn: () => getSystems(),
   });
 
   const toggleSidebar = () => {
@@ -52,7 +52,7 @@ const Systems = () => {
                     <CardTitle>{system.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">{system.description}</p>
+                    <p className="text-sm text-muted-foreground">{system.name}</p>
                   </CardContent>
                 </Card>
               ))}

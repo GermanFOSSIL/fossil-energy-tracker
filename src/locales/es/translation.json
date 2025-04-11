@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Cargando",
@@ -47,6 +46,19 @@
     "alertsDescription": "Alertas y notificaciones recientes de sus proyectos",
     "projectOverview": "Visión General de Proyectos",
     "projectStatus": "Estado actual y progreso de proyectos activos"
+  },
+  "navigation": {
+    "dashboard": "Tablero",
+    "projectManagement": "Gestión de Proyectos",
+    "projects": "Proyectos",
+    "systems": "Sistemas",
+    "subsystems": "Subsistemas",
+    "documentation": "Documentación",
+    "itrs": "ITRs",
+    "testPacks": "Paquetes de Prueba",
+    "users": "Usuarios",
+    "reports": "Informes",
+    "settings": "Configuración"
   },
   "projects": {
     "title": "Proyectos",

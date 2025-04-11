@@ -16,7 +16,7 @@ const Subsystems = () => {
 
   const { data: subsystems, isLoading } = useQuery({
     queryKey: ['subsystems'],
-    queryFn: getSubsystems,
+    queryFn: () => getSubsystems(),
   });
 
   const toggleSidebar = () => {
@@ -34,7 +34,7 @@ const Subsystems = () => {
           }`}
         >
           <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-fossil-900">{t('navigation.subsystems')}</h1>
+            <h1 className="text-2xl font-bold text-fossil-900">{t('subsystems.title')}</h1>
             <Button>
               {t('subsystems.newSubsystem')}
             </Button>
@@ -52,7 +52,7 @@ const Subsystems = () => {
                     <CardTitle>{subsystem.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">{subsystem.description}</p>
+                    <p className="text-sm text-muted-foreground">{subsystem.name}</p>
                   </CardContent>
                 </Card>
               ))}

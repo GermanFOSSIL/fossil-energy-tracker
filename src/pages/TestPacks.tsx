@@ -16,7 +16,7 @@ const TestPacks = () => {
 
   const { data: testPacks, isLoading } = useQuery({
     queryKey: ['testPacks'],
-    queryFn: getTestPacks,
+    queryFn: () => getTestPacks(),
   });
 
   const toggleSidebar = () => {
@@ -49,7 +49,7 @@ const TestPacks = () => {
               {testPacks?.map((testPack) => (
                 <Card key={testPack.id}>
                   <CardHeader>
-                    <CardTitle>{testPack.name}</CardTitle>
+                    <CardTitle>{testPack.nombre_paquete}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">{t(`testPacks.statuses.${testPack.estado}`)}</p>

@@ -1,20 +1,21 @@
 
 export interface Profile {
   id: string;
-  full_name?: string;
-  avatar_url?: string;
-  email?: string;
-  role?: string;
-  permissions?: string[];
+  avatar_url: string;
+  full_name: string;
+  role: string;
+  permissions: string[];
+  email: string;
   created_at: string;
   updated_at: string;
   metadata?: {
     roles?: Array<{
-      id: string;
-      user_id: string;
-      role: 'admin' | 'manager' | 'inspector' | 'viewer';
-      created_at: string;
+      role: string;
+      permissions: string[];
     }>;
-    [key: string]: any;
+    preferences?: {
+      theme: 'light' | 'dark';
+      notifications: boolean;
+    };
   };
 }

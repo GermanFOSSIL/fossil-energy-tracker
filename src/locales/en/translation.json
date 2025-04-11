@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Loading",
@@ -47,6 +46,19 @@
     "alertsDescription": "Recent alerts and notifications from your projects",
     "projectOverview": "Project Overview",
     "projectStatus": "Current status and progress of active projects"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "projectManagement": "Project Management",
+    "projects": "Projects",
+    "systems": "Systems",
+    "subsystems": "Subsystems",
+    "documentation": "Documentation",
+    "itrs": "ITRs",
+    "testPacks": "Test Packs",
+    "users": "Users",
+    "reports": "Reports",
+    "settings": "Settings"
   },
   "projects": {
     "title": "Projects",

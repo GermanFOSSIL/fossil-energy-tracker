@@ -17,7 +17,7 @@ const Itrs = () => {
 
   const { data: itrs, isLoading } = useQuery({
     queryKey: ['itrs'],
-    queryFn: getItrs,
+    queryFn: () => getItrs(),
   });
 
   const toggleSidebar = () => {
