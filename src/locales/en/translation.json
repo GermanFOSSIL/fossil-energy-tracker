@@ -1,272 +1,175 @@
 
 {
   "common": {
-    "appName": "FOSSIL Energies",
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
+    "loading": "Loading",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
     "create": "Create",
-    "search": "Search...",
+    "view": "View",
+    "search": "Search",
     "filter": "Filter",
     "noResults": "No results found",
-    "yes": "Yes",
-    "no": "No",
-    "confirm": "Confirm",
-    "actions": "Actions",
-    "seeAll": "See all",
     "back": "Back",
-    "next": "Next"
+    "next": "Next",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "actions": "Actions"
   },
-  "navigation": {
-    "dashboard": "Dashboard",
-    "projectManagement": "Project Management",
-    "projects": "Projects",
-    "systems": "Systems",
-    "subsystems": "Subsystems",
-    "documentation": "Documentation",
-    "itrs": "ITRs",
-    "testPacks": "Test Packs",
-    "users": "Users",
-    "reports": "Reports",
-    "settings": "Settings"
+  "auth": {
+    "login": "Log In",
+    "loginDescription": "Enter your credentials to access your account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "passwordResetSent": "Password reset link sent",
+    "checkEmail": "Please check your email for the reset link",
+    "welcomeBack": "Welcome back",
+    "loginSuccessful": "You have successfully logged in",
+    "logout": "Log out",
+    "profile": "Profile"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "loginFailed": "Login failed",
+    "unauthorized": "You are not authorized to access this resource",
+    "unexpectedError": "An unexpected error occurred. Please try again",
+    "validation": "Please check your input and try again",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "serverError": "Server error. Please try again later"
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back",
-    "projectOverview": "Project Overview",
-    "projectStatus": "Current status and progress of active projects",
+    "welcomeMessage": "Welcome to FOSSIL Energy Tracker",
     "alerts": "Alerts & Notifications",
     "alertsDescription": "Recent alerts and notifications from your projects",
-    "kpis": {
-      "activeProjects": "Active Projects",
-      "completedItrs": "Completed ITRs",
-      "pendingSignatures": "Pending Signatures",
-      "overdueTasks": "Overdue Tasks"
-    }
+    "projectOverview": "Project Overview",
+    "projectStatus": "Current status and progress of active projects"
   },
   "projects": {
     "title": "Projects",
-    "create": "Create Project",
-    "edit": "Edit Project",
-    "delete": "Delete Project",
-    "details": "Project Details",
-    "name": "Project Name",
+    "newProject": "New Project",
+    "editProject": "Edit Project",
+    "deleteProject": "Delete Project",
+    "projectDetails": "Project Details",
+    "projectName": "Project Name",
     "location": "Location",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "status": "Status",
     "progress": "Progress",
+    "status": "Status",
     "statuses": {
       "pending": "Pending",
       "inProgress": "In Progress",
       "completed": "Completed",
       "delayed": "Delayed"
     },
-    "confirmDelete": "Are you sure you want to delete this project? This action cannot be undone.",
-    "export": {
-      "title": "Export Projects",
-      "pdf": "Export to PDF",
-      "excel": "Export to Excel"
-    }
+    "confirmDelete": "Are you sure you want to delete this project?"
   },
   "systems": {
     "title": "Systems",
+    "newSystem": "New System",
+    "editSystem": "Edit System",
+    "deleteSystem": "Delete System",
+    "systemDetails": "System Details",
+    "systemName": "System Name",
     "project": "Project",
-    "create": "Create System",
-    "edit": "Edit System",
-    "delete": "Delete System",
-    "details": "System Details",
-    "name": "System Name",
-    "startDate": "Start Date",
-    "endDate": "End Date",
-    "completionRate": "Completion Rate"
+    "confirmDelete": "Are you sure you want to delete this system?"
   },
   "subsystems": {
     "title": "Subsystems",
+    "newSubsystem": "New Subsystem",
+    "editSubsystem": "Edit Subsystem",
+    "deleteSubsystem": "Delete Subsystem",
+    "subsystemDetails": "Subsystem Details",
+    "subsystemName": "Subsystem Name",
     "system": "System",
-    "create": "Create Subsystem",
-    "edit": "Edit Subsystem",
-    "delete": "Delete Subsystem",
-    "details": "Subsystem Details",
-    "name": "Subsystem Name",
-    "startDate": "Start Date",
-    "endDate": "End Date",
-    "completionRate": "Completion Rate"
+    "confirmDelete": "Are you sure you want to delete this subsystem?"
   },
   "itrs": {
     "title": "ITRs",
-    "create": "Create ITR",
-    "edit": "Edit ITR",
-    "delete": "Delete ITR",
-    "details": "ITR Details",
-    "name": "ITR Name",
-    "status": "Status",
+    "newItr": "New ITR",
+    "editItr": "Edit ITR",
+    "deleteItr": "Delete ITR",
+    "itrDetails": "ITR Details",
+    "itrName": "ITR Name",
     "subsystem": "Subsystem",
-    "progress": "Progress",
     "quantity": "Quantity",
-    "startDate": "Start Date",
-    "endDate": "End Date",
+    "status": "Status",
+    "progress": "Progress",
     "assignedTo": "Assigned To",
-    "statuses": {
-      "pending": "Pending",
-      "inProgress": "In Progress",
-      "complete": "Complete"
-    },
-    "signatures": {
-      "title": "Signatures",
-      "sign": "Sign",
-      "revoke": "Revoke Signature",
-      "inspector": "Inspector",
-      "approver": "Approver",
-      "signedBy": "Signed by",
-      "signedOn": "Signed on",
-      "confirmSign": "Are you sure you want to sign this ITR as {{role}}?",
-      "confirmRevoke": "Are you sure you want to revoke this signature? This will set the ITR back to in-progress status.",
-      "alreadySigned": "This ITR has already been signed by this user as {{role}}",
-      "allSignaturesCollected": "All signatures collected"
-    }
+    "signatures": "Signatures",
+    "inspectorSignature": "Inspector Signature",
+    "approverSignature": "Approver Signature",
+    "signItr": "Sign ITR",
+    "revokeSignature": "Revoke Signature",
+    "confirmDelete": "Are you sure you want to delete this ITR?"
   },
   "testPacks": {
     "title": "Test Packs",
-    "create": "Create Test Pack",
-    "edit": "Edit Test Pack",
-    "delete": "Delete Test Pack",
-    "details": "Test Pack Details",
-    "name": "Test Pack Name",
+    "newTestPack": "New Test Pack",
+    "editTestPack": "Edit Test Pack",
+    "deleteTestPack": "Delete Test Pack",
+    "testPackDetails": "Test Pack Details",
+    "testPackName": "Test Pack Name",
+    "itr": "ITR",
     "system": "System",
     "subsystem": "Subsystem",
     "status": "Status",
-    "associatedItr": "Associated ITR",
-    "tags": {
-      "title": "Tags",
-      "create": "Create Tag",
-      "delete": "Delete Tag",
-      "name": "Tag Name",
-      "status": "Status",
-      "releaseDate": "Release Date"
-    }
+    "tags": "Tags",
+    "confirmDelete": "Are you sure you want to delete this test pack?"
   },
   "users": {
     "title": "Users",
-    "create": "Create User",
-    "edit": "Edit User",
-    "delete": "Delete User",
-    "details": "User Details",
-    "name": "Full Name",
+    "newUser": "New User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "userDetails": "User Details",
+    "fullName": "Full Name",
     "email": "Email",
+    "role": "Role",
     "password": "Password",
     "confirmPassword": "Confirm Password",
-    "role": "Role",
     "roles": {
       "admin": "Administrator",
       "manager": "Manager",
       "inspector": "Inspector",
       "viewer": "Viewer"
     },
-    "assignRole": "Assign Role",
-    "removeRole": "Remove Role",
-    "lastLogin": "Last Login",
-    "permissions": "Permissions"
+    "confirmDelete": "Are you sure you want to delete this user?"
   },
   "reports": {
     "title": "Reports",
-    "generate": "Generate Report",
+    "generateReport": "Generate Report",
+    "exportToPdf": "Export to PDF",
+    "exportToExcel": "Export to Excel",
     "schedule": "Schedule Reports",
-    "download": "Download Report",
-    "recipients": {
-      "title": "Report Recipients",
-      "add": "Add Recipient",
-      "remove": "Remove Recipient",
-      "email": "Email Address"
-    },
-    "scheduleSettings": {
-      "title": "Schedule Settings",
-      "daily": "Daily",
-      "weekly": "Weekly",
-      "monthly": "Monthly",
-      "time": "Time",
-      "day": "Day",
-      "enabled": "Enabled"
-    }
+    "recipients": "Report Recipients",
+    "frequency": "Frequency",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "time": "Time",
+    "day": "Day",
+    "addRecipient": "Add Recipient"
   },
   "settings": {
     "title": "Settings",
+    "appearance": "Appearance",
+    "language": "Language",
+    "notifications": "Notifications",
+    "security": "Security",
+    "account": "Account",
     "language": {
-      "title": "Language",
-      "select": "Select Language",
       "english": "English",
-      "spanish": "Spanish",
-      "autodetect": "Auto-detect from browser"
-    },
-    "profile": {
-      "title": "Profile Settings",
-      "name": "Full Name",
-      "email": "Email",
-      "avatar": "Profile Picture",
-      "changePassword": "Change Password",
-      "currentPassword": "Current Password",
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm New Password"
-    },
-    "notifications": {
-      "title": "Notification Settings",
-      "email": "Email Notifications",
-      "browser": "Browser Notifications"
-    },
-    "theme": {
-      "title": "Theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System Default"
+      "spanish": "Spanish"
     }
   },
-  "emails": {
-    "report": {
-      "subject": "FOSSIL Energy Tracker - Scheduled Report",
-      "greeting": "Hello,",
-      "intro": "Please find attached the scheduled report for {{date}}.",
-      "content": "This report includes the latest data from your projects and their progress.",
-      "outro": "If you have any questions or need further information, please contact your administrator.",
-      "footer": "This is an automated message, please do not reply to this email."
-    },
-    "alert": {
-      "subject": "FOSSIL Energy Tracker - Alert Notification",
-      "greeting": "Hello,",
-      "intro": "We are writing to inform you about the following alert:",
-      "content": "{{alertMessage}}",
-      "action": "Please take appropriate action as soon as possible.",
-      "footer": "This is an automated message from the FOSSIL Energy Tracker system."
-    }
-  },
-  "exports": {
-    "title": "Export",
-    "generatedOn": "Generated on",
-    "page": "Page",
-    "of": "of",
-    "projectReport": "Project Report",
-    "itrReport": "ITR Report",
-    "testPackReport": "Test Pack Report",
-    "userReport": "User Report"
-  },
-  "validation": {
-    "required": "This field is required",
-    "email": "Please enter a valid email address",
-    "passwordMatch": "Passwords do not match",
-    "minLength": "Must be at least {{count}} characters",
-    "dateRange": "End date must be after start date",
-    "numberRange": "Value must be between {{min}} and {{max}}",
-    "invalidFormat": "Invalid format"
-  },
-  "errors": {
-    "generic": "An error occurred. Please try again.",
-    "network": "Network error. Please check your connection.",
-    "unauthorized": "You are not authorized to perform this action.",
-    "notFound": "The requested resource was not found.",
-    "validation": "Please correct the validation errors.",
-    "serverError": "Server error. Please try again later."
+  "documentation": {
+    "title": "Documentation",
+    "itrs": "ITRs",
+    "testPacks": "Test Packs"
   }
 }

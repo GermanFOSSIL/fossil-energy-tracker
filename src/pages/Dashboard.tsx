@@ -1,6 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { 
   LayoutDashboard, 
@@ -23,10 +24,27 @@ import { getProjects } from '@/services/projectService';
 import { getSystems } from '@/services/systemService';
 import { getItrs } from '@/services/itrService';
 import { getTestPacks } from '@/services/testPackService';
+import { getCurrentUser } from '@/services/authService';
+import { Profile } from '@/types/profile';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [currentUser, setCurrentUser] = useState<Profile | null>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   // Fetch data for KPI cards
   const { data: projects, isLoading: projectsLoading } = useQuery({
@@ -72,7 +90,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen w-full flex-col bg-gray-50">
-      <Navbar toggleSidebar={toggleSidebar} />
+      <Navbar toggleSidebar={toggleSidebar} currentUser={currentUser} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={sidebarOpen} />
         <main 
@@ -81,45 +99,45 @@ const Dashboard = () => {
           }`}
         >
           <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-fossil-900">Dashboard</h1>
+            <h1 className="text-2xl font-bold text-fossil-900">{t('dashboard.title')}</h1>
             <div className="flex items-center space-x-2">
               <Button variant="outline" onClick={() => navigate('/reports')}>
                 <FileBarChart className="mr-2 h-4 w-4" />
-                Generate Report
+                {t('reports.generateReport')}
               </Button>
               <Button onClick={() => navigate('/projects/new')}>
-                New Project
+                {t('projects.newProject')}
               </Button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             <KPICard
-              title="Active Projects"
+              title={t('projects.title')}
               value={activeProjects}
               icon={<LayoutDashboard className="h-5 w-5" />}
               change={{ value: 0, isPositive: true }}
-              footer={`Total of ${activeProjects} active projects`}
+              footer={`${t('projects.title')} ${activeProjects} ${t('projects.statuses.inProgress').toLowerCase()}`}
             />
             <KPICard
               title="ITRs"
               value={itrStats.total}
               icon={<ClipboardList className="h-5 w-5" />}
-              description={`${itrStats.pending} pending, ${itrStats.inProgress} in progress, ${itrStats.completed} completed`}
-              footer={`${itrStats.pending} ITRs pending approval`}
+              description={`${itrStats.pending} ${t('projects.statuses.pending').toLowerCase()}, ${itrStats.inProgress} ${t('projects.statuses.inProgress').toLowerCase()}, ${itrStats.completed} ${t('projects.statuses.completed').toLowerCase()}`}
+              footer={`${itrStats.pending} ITRs ${t('projects.statuses.pending').toLowerCase()}`}
             />
             <KPICard
-              title="Test Packs"
+              title={t('testPacks.title')}
               value={testPackStats.total}
               icon={<FileCheck className="h-5 w-5" />}
-              description={`${testPackStats.pending} pending, ${testPackStats.inProgress} in progress, ${testPackStats.completed} completed`}
+              description={`${testPackStats.pending} ${t('projects.statuses.pending').toLowerCase()}, ${testPackStats.inProgress} ${t('projects.statuses.inProgress').toLowerCase()}, ${testPackStats.completed} ${t('projects.statuses.completed').toLowerCase()}`}
               change={{ value: 0, isPositive: true }}
             />
             <KPICard
-              title="Systems"
+              title={t('systems.title')}
               value={systems?.length || 0}
               icon={<Users className="h-5 w-5" />}
-              description={`${systems?.length || 0} systems across ${activeProjects} active projects`}
+              description={`${systems?.length || 0} ${t('systems.title').toLowerCase()} ${t('systems.title').toLowerCase()} ${activeProjects} ${t('projects.title').toLowerCase()}`}
             />
           </div>
 

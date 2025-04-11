@@ -8,4 +8,13 @@ export interface Profile {
   permissions?: string[];
   created_at: string;
   updated_at: string;
+  metadata?: {
+    roles?: Array<{
+      id: string;
+      user_id: string;
+      role: 'admin' | 'manager' | 'inspector' | 'viewer';
+      created_at: string;
+    }>;
+    [key: string]: any;
+  };
 }

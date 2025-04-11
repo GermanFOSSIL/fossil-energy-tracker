@@ -11,4 +11,15 @@ export interface ITR {
   assigned_to?: string;
   created_at: string;
   updated_at: string;
+  metadata?: {
+    signatures?: Array<{
+      id: string;
+      itr_id: string;
+      user_id: string;
+      role: 'inspector' | 'approver';
+      signature_date: string;
+      created_at: string;
+    }>;
+    [key: string]: any;
+  };
 }

@@ -1,272 +1,175 @@
 
 {
   "common": {
-    "appName": "FOSSIL Energies",
-    "loading": "Cargando...",
-    "error": "Error",
-    "success": "Éxito",
+    "loading": "Cargando",
     "save": "Guardar",
     "cancel": "Cancelar",
     "delete": "Eliminar",
     "edit": "Editar",
     "create": "Crear",
-    "search": "Buscar...",
+    "view": "Ver",
+    "search": "Buscar",
     "filter": "Filtrar",
     "noResults": "No se encontraron resultados",
-    "yes": "Sí",
-    "no": "No",
-    "confirm": "Confirmar",
-    "actions": "Acciones",
-    "seeAll": "Ver todo",
     "back": "Atrás",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "confirm": "Confirmar",
+    "actions": "Acciones"
   },
-  "navigation": {
-    "dashboard": "Panel de Control",
-    "projectManagement": "Gestión de Proyectos",
-    "projects": "Proyectos",
-    "systems": "Sistemas",
-    "subsystems": "Subsistemas",
-    "documentation": "Documentación",
-    "itrs": "ITRs",
-    "testPacks": "Paquetes de Prueba",
-    "users": "Usuarios",
-    "reports": "Informes",
-    "settings": "Configuración"
+  "auth": {
+    "login": "Iniciar Sesión",
+    "loginDescription": "Ingrese sus credenciales para acceder a su cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidó su contraseña?",
+    "passwordResetSent": "Enlace de restablecimiento enviado",
+    "checkEmail": "Por favor revise su correo para el enlace de restablecimiento",
+    "welcomeBack": "Bienvenido de nuevo",
+    "loginSuccessful": "Ha iniciado sesión exitosamente",
+    "logout": "Cerrar sesión",
+    "profile": "Perfil"
+  },
+  "errors": {
+    "generic": "Ocurrió un error",
+    "loginFailed": "Error al iniciar sesión",
+    "unauthorized": "No está autorizado para acceder a este recurso",
+    "unexpectedError": "Ocurrió un error inesperado. Por favor intente de nuevo",
+    "validation": "Por favor verifique su entrada e intente de nuevo",
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Por favor ingrese una dirección de correo válida",
+    "serverError": "Error del servidor. Por favor intente más tarde"
   },
   "dashboard": {
-    "title": "Panel de Control",
-    "welcome": "Bienvenido de nuevo",
-    "projectOverview": "Resumen de Proyectos",
-    "projectStatus": "Estado actual y progreso de proyectos activos",
+    "title": "Tablero",
+    "welcomeMessage": "Bienvenido a FOSSIL Energy Tracker",
     "alerts": "Alertas y Notificaciones",
-    "alertsDescription": "Alertas y notificaciones recientes de tus proyectos",
-    "kpis": {
-      "activeProjects": "Proyectos Activos",
-      "completedItrs": "ITRs Completados",
-      "pendingSignatures": "Firmas Pendientes",
-      "overdueTasks": "Tareas Atrasadas"
-    }
+    "alertsDescription": "Alertas y notificaciones recientes de sus proyectos",
+    "projectOverview": "Visión General de Proyectos",
+    "projectStatus": "Estado actual y progreso de proyectos activos"
   },
   "projects": {
     "title": "Proyectos",
-    "create": "Crear Proyecto",
-    "edit": "Editar Proyecto",
-    "delete": "Eliminar Proyecto",
-    "details": "Detalles del Proyecto",
-    "name": "Nombre del Proyecto",
+    "newProject": "Nuevo Proyecto",
+    "editProject": "Editar Proyecto",
+    "deleteProject": "Eliminar Proyecto",
+    "projectDetails": "Detalles del Proyecto",
+    "projectName": "Nombre del Proyecto",
     "location": "Ubicación",
     "startDate": "Fecha de Inicio",
     "endDate": "Fecha de Finalización",
-    "status": "Estado",
     "progress": "Progreso",
+    "status": "Estado",
     "statuses": {
       "pending": "Pendiente",
       "inProgress": "En Progreso",
       "completed": "Completado",
       "delayed": "Retrasado"
     },
-    "confirmDelete": "¿Está seguro de que desea eliminar este proyecto? Esta acción no se puede deshacer.",
-    "export": {
-      "title": "Exportar Proyectos",
-      "pdf": "Exportar a PDF",
-      "excel": "Exportar a Excel"
-    }
+    "confirmDelete": "¿Está seguro de que desea eliminar este proyecto?"
   },
   "systems": {
     "title": "Sistemas",
+    "newSystem": "Nuevo Sistema",
+    "editSystem": "Editar Sistema",
+    "deleteSystem": "Eliminar Sistema",
+    "systemDetails": "Detalles del Sistema",
+    "systemName": "Nombre del Sistema",
     "project": "Proyecto",
-    "create": "Crear Sistema",
-    "edit": "Editar Sistema",
-    "delete": "Eliminar Sistema",
-    "details": "Detalles del Sistema",
-    "name": "Nombre del Sistema",
-    "startDate": "Fecha de Inicio",
-    "endDate": "Fecha de Finalización",
-    "completionRate": "Tasa de Finalización"
+    "confirmDelete": "¿Está seguro de que desea eliminar este sistema?"
   },
   "subsystems": {
     "title": "Subsistemas",
+    "newSubsystem": "Nuevo Subsistema",
+    "editSubsystem": "Editar Subsistema",
+    "deleteSubsystem": "Eliminar Subsistema",
+    "subsystemDetails": "Detalles del Subsistema",
+    "subsystemName": "Nombre del Subsistema",
     "system": "Sistema",
-    "create": "Crear Subsistema",
-    "edit": "Editar Subsistema",
-    "delete": "Eliminar Subsistema",
-    "details": "Detalles del Subsistema",
-    "name": "Nombre del Subsistema",
-    "startDate": "Fecha de Inicio",
-    "endDate": "Fecha de Finalización",
-    "completionRate": "Tasa de Finalización"
+    "confirmDelete": "¿Está seguro de que desea eliminar este subsistema?"
   },
   "itrs": {
     "title": "ITRs",
-    "create": "Crear ITR",
-    "edit": "Editar ITR",
-    "delete": "Eliminar ITR",
-    "details": "Detalles del ITR",
-    "name": "Nombre del ITR",
-    "status": "Estado",
+    "newItr": "Nuevo ITR",
+    "editItr": "Editar ITR",
+    "deleteItr": "Eliminar ITR",
+    "itrDetails": "Detalles del ITR",
+    "itrName": "Nombre del ITR",
     "subsystem": "Subsistema",
-    "progress": "Progreso",
     "quantity": "Cantidad",
-    "startDate": "Fecha de Inicio",
-    "endDate": "Fecha de Finalización",
+    "status": "Estado",
+    "progress": "Progreso",
     "assignedTo": "Asignado a",
-    "statuses": {
-      "pending": "Pendiente",
-      "inProgress": "En Progreso",
-      "complete": "Completo"
-    },
-    "signatures": {
-      "title": "Firmas",
-      "sign": "Firmar",
-      "revoke": "Revocar Firma",
-      "inspector": "Inspector",
-      "approver": "Aprobador",
-      "signedBy": "Firmado por",
-      "signedOn": "Firmado el",
-      "confirmSign": "¿Está seguro de que desea firmar este ITR como {{role}}?",
-      "confirmRevoke": "¿Está seguro de que desea revocar esta firma? Esto establecerá el ITR de nuevo al estado en progreso.",
-      "alreadySigned": "Este ITR ya ha sido firmado por este usuario como {{role}}",
-      "allSignaturesCollected": "Todas las firmas recolectadas"
-    }
+    "signatures": "Firmas",
+    "inspectorSignature": "Firma del Inspector",
+    "approverSignature": "Firma del Aprobador",
+    "signItr": "Firmar ITR",
+    "revokeSignature": "Revocar Firma",
+    "confirmDelete": "¿Está seguro de que desea eliminar este ITR?"
   },
   "testPacks": {
     "title": "Paquetes de Prueba",
-    "create": "Crear Paquete de Prueba",
-    "edit": "Editar Paquete de Prueba",
-    "delete": "Eliminar Paquete de Prueba",
-    "details": "Detalles del Paquete de Prueba",
-    "name": "Nombre del Paquete de Prueba",
+    "newTestPack": "Nuevo Paquete de Prueba",
+    "editTestPack": "Editar Paquete de Prueba",
+    "deleteTestPack": "Eliminar Paquete de Prueba",
+    "testPackDetails": "Detalles del Paquete de Prueba",
+    "testPackName": "Nombre del Paquete de Prueba",
+    "itr": "ITR",
     "system": "Sistema",
     "subsystem": "Subsistema",
     "status": "Estado",
-    "associatedItr": "ITR Asociado",
-    "tags": {
-      "title": "Etiquetas",
-      "create": "Crear Etiqueta",
-      "delete": "Eliminar Etiqueta",
-      "name": "Nombre de la Etiqueta",
-      "status": "Estado",
-      "releaseDate": "Fecha de Liberación"
-    }
+    "tags": "Etiquetas",
+    "confirmDelete": "¿Está seguro de que desea eliminar este paquete de prueba?"
   },
   "users": {
     "title": "Usuarios",
-    "create": "Crear Usuario",
-    "edit": "Editar Usuario",
-    "delete": "Eliminar Usuario",
-    "details": "Detalles del Usuario",
-    "name": "Nombre Completo",
+    "newUser": "Nuevo Usuario",
+    "editUser": "Editar Usuario",
+    "deleteUser": "Eliminar Usuario",
+    "userDetails": "Detalles del Usuario",
+    "fullName": "Nombre Completo",
     "email": "Correo Electrónico",
+    "role": "Rol",
     "password": "Contraseña",
     "confirmPassword": "Confirmar Contraseña",
-    "role": "Rol",
     "roles": {
       "admin": "Administrador",
       "manager": "Gerente",
       "inspector": "Inspector",
-      "viewer": "Visualizador"
+      "viewer": "Visor"
     },
-    "assignRole": "Asignar Rol",
-    "removeRole": "Eliminar Rol",
-    "lastLogin": "Último Inicio de Sesión",
-    "permissions": "Permisos"
+    "confirmDelete": "¿Está seguro de que desea eliminar este usuario?"
   },
   "reports": {
     "title": "Informes",
-    "generate": "Generar Informe",
+    "generateReport": "Generar Informe",
+    "exportToPdf": "Exportar a PDF",
+    "exportToExcel": "Exportar a Excel",
     "schedule": "Programar Informes",
-    "download": "Descargar Informe",
-    "recipients": {
-      "title": "Destinatarios de Informes",
-      "add": "Añadir Destinatario",
-      "remove": "Eliminar Destinatario",
-      "email": "Dirección de Correo Electrónico"
-    },
-    "scheduleSettings": {
-      "title": "Configuración de Programación",
-      "daily": "Diario",
-      "weekly": "Semanal",
-      "monthly": "Mensual",
-      "time": "Hora",
-      "day": "Día",
-      "enabled": "Habilitado"
-    }
+    "recipients": "Destinatarios de Informes",
+    "frequency": "Frecuencia",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "time": "Hora",
+    "day": "Día",
+    "addRecipient": "Añadir Destinatario"
   },
   "settings": {
     "title": "Configuración",
+    "appearance": "Apariencia",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "security": "Seguridad",
+    "account": "Cuenta",
     "language": {
-      "title": "Idioma",
-      "select": "Seleccionar Idioma",
       "english": "Inglés",
-      "spanish": "Español",
-      "autodetect": "Autodetectar del navegador"
-    },
-    "profile": {
-      "title": "Configuración del Perfil",
-      "name": "Nombre Completo",
-      "email": "Correo Electrónico",
-      "avatar": "Foto de Perfil",
-      "changePassword": "Cambiar Contraseña",
-      "currentPassword": "Contraseña Actual",
-      "newPassword": "Nueva Contraseña",
-      "confirmPassword": "Confirmar Nueva Contraseña"
-    },
-    "notifications": {
-      "title": "Configuración de Notificaciones",
-      "email": "Notificaciones por Correo Electrónico",
-      "browser": "Notificaciones del Navegador"
-    },
-    "theme": {
-      "title": "Tema",
-      "light": "Claro",
-      "dark": "Oscuro",
-      "system": "Predeterminado del Sistema"
+      "spanish": "Español"
     }
   },
-  "emails": {
-    "report": {
-      "subject": "FOSSIL Energy Tracker - Informe Programado",
-      "greeting": "Hola,",
-      "intro": "Adjunto encontrará el informe programado para {{date}}.",
-      "content": "Este informe incluye los datos más recientes de sus proyectos y su progreso.",
-      "outro": "Si tiene alguna pregunta o necesita más información, póngase en contacto con su administrador.",
-      "footer": "Este es un mensaje automático, por favor no responda a este correo electrónico."
-    },
-    "alert": {
-      "subject": "FOSSIL Energy Tracker - Notificación de Alerta",
-      "greeting": "Hola,",
-      "intro": "Le escribimos para informarle sobre la siguiente alerta:",
-      "content": "{{alertMessage}}",
-      "action": "Por favor, tome las medidas apropiadas lo antes posible.",
-      "footer": "Este es un mensaje automático del sistema FOSSIL Energy Tracker."
-    }
-  },
-  "exports": {
-    "title": "Exportar",
-    "generatedOn": "Generado el",
-    "page": "Página",
-    "of": "de",
-    "projectReport": "Informe de Proyecto",
-    "itrReport": "Informe de ITR",
-    "testPackReport": "Informe de Paquete de Prueba",
-    "userReport": "Informe de Usuario"
-  },
-  "validation": {
-    "required": "Este campo es obligatorio",
-    "email": "Por favor, introduzca una dirección de correo electrónico válida",
-    "passwordMatch": "Las contraseñas no coinciden",
-    "minLength": "Debe tener al menos {{count}} caracteres",
-    "dateRange": "La fecha de finalización debe ser posterior a la fecha de inicio",
-    "numberRange": "El valor debe estar entre {{min}} y {{max}}",
-    "invalidFormat": "Formato inválido"
-  },
-  "errors": {
-    "generic": "Se produjo un error. Por favor, inténtelo de nuevo.",
-    "network": "Error de red. Por favor, compruebe su conexión.",
-    "unauthorized": "No está autorizado para realizar esta acción.",
-    "notFound": "No se encontró el recurso solicitado.",
-    "validation": "Por favor, corrija los errores de validación.",
-    "serverError": "Error del servidor. Por favor, inténtelo de nuevo más tarde."
+  "documentation": {
+    "title": "Documentación",
+    "itrs": "ITRs",
+    "testPacks": "Paquetes de Prueba"
   }
 }
