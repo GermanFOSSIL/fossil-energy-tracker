@@ -104,10 +104,10 @@ export async function updateReportSchedule(settings: ReportScheduleSettings): Pr
   const existingSchedule = await getReportSchedule();
   
   if (existingSchedule) {
-    // Update existing schedule
+    // Update existing schedule - convert settings to Json type for Supabase
     const { data, error } = await supabase
       .from('report_schedule')
-      .update({ settings })
+      .update({ settings: settings as unknown as Json })
       .eq('id', existingSchedule.id)
       .select()
       .single();
@@ -126,10 +126,10 @@ export async function updateReportSchedule(settings: ReportScheduleSettings): Pr
         : data.settings as unknown as ReportScheduleSettings
     };
   } else {
-    // Create a new schedule
+    // Create a new schedule - convert settings to Json type for Supabase
     const { data, error } = await supabase
       .from('report_schedule')
-      .insert({ settings })
+      .insert({ settings: settings as unknown as Json })
       .select()
       .single();
     
