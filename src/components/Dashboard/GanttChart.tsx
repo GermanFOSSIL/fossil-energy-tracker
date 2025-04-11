@@ -35,8 +35,13 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('en-US', {
+const formatDate = (dateString: string | number) => {
+  // Convert timestamp to string if it's a number
+  const dateInput = typeof dateString === 'number' 
+    ? new Date(dateString).toISOString() 
+    : dateString;
+    
+  return new Date(dateInput).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
   });
@@ -86,7 +91,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
           <p className="font-semibold">{data.name}</p>
           <p className="text-sm">
             <span className="font-medium">Period:</span>{' '}
-            {formatDate(new Date(data.start))} - {formatDate(new Date(data.start + data.duration))}
+            {formatDate(data.start)} - {formatDate(data.start + data.duration)}
           </p>
           <p className="text-sm">
             <span className="font-medium">Completion:</span> {data.completion}%
@@ -157,7 +162,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
               <XAxis
                 type="number"
                 domain={[startDate.getTime(), endDate.getTime()]}
-                tickFormatter={(timestamp) => formatDate(new Date(timestamp))}
+                tickFormatter={(timestamp) => formatDate(timestamp)}
                 padding={{ left: 10, right: 10 }}
               />
               <YAxis
