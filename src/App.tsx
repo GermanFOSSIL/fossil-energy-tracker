@@ -1,92 +1,74 @@
+import { useState, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
+import Index from '@/pages/Index';
+import Dashboard from '@/pages/Dashboard';
+import Projects from '@/pages/Projects';
+import Systems from '@/pages/Systems';
+import Subsystems from '@/pages/Subsystems';
+import Itrs from '@/pages/Itrs';
+import TestPacks from '@/pages/TestPacks';
+import Users from '@/pages/Users';
+import Profile from '@/pages/Profile';
+import Reports from '@/pages/Reports';
+import Settings from '@/pages/Settings';
+import NotFound from '@/pages/NotFound';
+import CreateProject from '@/pages/CreateProject';
+import EditProject from '@/pages/EditProject';
+import CreateSystem from '@/pages/CreateSystem';
+import EditSystem from '@/pages/EditSystem';
+import CreateSubsystem from '@/pages/CreateSubsystem';
+import EditSubsystem from '@/pages/EditSubsystem';
+import CreateItr from '@/pages/CreateItr';
+import EditItr from '@/pages/EditItr';
+import CreateTestPack from '@/pages/CreateTestPack';
+import EditTestPack from '@/pages/EditTestPack';
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import "./i18n"; // Import i18n configuration
-
-// Pages
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
-import Projects from "./pages/Projects";
-import Systems from "./pages/Systems";
-import Subsystems from "./pages/Subsystems";
-import Itrs from "./pages/Itrs";
-import TestPacks from "./pages/TestPacks";
-import Users from "./pages/Users";
-import Reports from "./pages/Reports";
-import Settings from "./pages/Settings";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
-
-const App = () => {
-  const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const { data } = await supabase.auth.getSession();
-        setSession(data.session);
-      } catch (error) {
-        console.error("Error fetching session:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-fossil-500 border-t-transparent"></div>
-      </div>
-    );
-  }
+function App() {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000, // 60 seconds
+      },
+    },
+  }));
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+      <div className="app">
+        <Suspense fallback={<div>Loading...</div>}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/projects/create" element={<CreateProject />} />
+              <Route path="/projects/edit/:id" element={<EditProject />} />
+              <Route path="/systems" element={<Systems />} />
+              <Route path="/systems/create" element={<CreateSystem />} />
+              <Route path="/systems/edit/:id" element={<EditSystem />} />
+              <Route path="/subsystems" element={<Subsystems />} />
+              <Route path="/subsystems/create" element={<CreateSubsystem />} />
+              <Route path="/subsystems/edit/:id" element={<EditSubsystem />} />
+              <Route path="/itrs" element={<Itrs />} />
+              <Route path="/itrs/create" element={<CreateItr />} />
+              <Route path="/itrs/edit/:id" element={<EditItr />} />
+              <Route path="/testpacks" element={<TestPacks />} />
+              <Route path="/testpacks/create" element={<CreateTestPack />} />
+              <Route path="/testpacks/edit/:id" element={<EditTestPack />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </Suspense>
         <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Index />} />
-            <Route path="/login" element={session ? <Navigate to="/dashboard" /> : <Login />} />
-            
-            {/* Protected routes */}
-            <Route path="/dashboard" element={session ? <Dashboard /> : <Navigate to="/login" />} />
-            <Route path="/projects" element={session ? <Projects /> : <Navigate to="/login" />} />
-            <Route path="/systems" element={session ? <Systems /> : <Navigate to="/login" />} />
-            <Route path="/subsystems" element={session ? <Subsystems /> : <Navigate to="/login" />} />
-            <Route path="/itrs" element={session ? <Itrs /> : <Navigate to="/login" />} />
-            <Route path="/test-packs" element={session ? <TestPacks /> : <Navigate to="/login" />} />
-            <Route path="/users" element={session ? <Users /> : <Navigate to="/login" />} />
-            <Route path="/reports" element={session ? <Reports /> : <Navigate to="/login" />} />
-            <Route path="/settings" element={session ? <Settings /> : <Navigate to="/login" />} />
-            <Route path="/profile" element={session ? <Profile /> : <Navigate to="/login" />} />
-            
-            {/* Catch-all route for 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      </div>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;

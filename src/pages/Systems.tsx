@@ -2,17 +2,20 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Layout/Navbar';
 import Sidebar from '@/components/Layout/Sidebar';
 import { getSystems } from '@/services/systemService';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { getCurrentUser } from '@/services/authService';
 
 const Systems = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { data: systems, isLoading } = useQuery({
     queryKey: ['systems'],
@@ -21,6 +24,14 @@ const Systems = () => {
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleCreateSystem = () => {
+    navigate('/systems/create');
+  };
+
+  const handleEditSystem = (id: string) => {
+    navigate(`/systems/edit/${id}`);
   };
 
   return (
@@ -35,7 +46,7 @@ const Systems = () => {
         >
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-fossil-900">{t('systems.title')}</h1>
-            <Button>
+            <Button onClick={handleCreateSystem}>
               {t('systems.newSystem')}
             </Button>
           </div>
@@ -47,13 +58,31 @@ const Systems = () => {
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {systems?.map((system) => (
-                <Card key={system.id}>
+                <Card key={system.id} className="overflow-hidden">
                   <CardHeader>
                     <CardTitle>{system.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">{system.name}</p>
+                    {system.completion_rate !== undefined && (
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-sm">
+                          <span>{t('systems.completionRate')}</span>
+                          <span>{system.completion_rate}%</span>
+                        </div>
+                        <Progress value={system.completion_rate} className="h-2" />
+                      </div>
+                    )}
                   </CardContent>
+                  <CardFooter className="border-t pt-4">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => handleEditSystem(system.id)}
+                    >
+                      {t('common.edit')}
+                    </Button>
+                  </CardFooter>
                 </Card>
               ))}
             </div>
