@@ -31,7 +31,7 @@ export async function getProject(id: string): Promise<Project | null> {
   return data;
 }
 
-export async function createProject(projectData: Partial<Project>): Promise<Project> {
+export async function createProject(projectData: Omit<Partial<Project>, 'name'> & { name: string }): Promise<Project> {
   const { data, error } = await supabase
     .from('projects')
     .insert(projectData)

@@ -37,7 +37,7 @@ export async function getSystem(id: string): Promise<System | null> {
   return data;
 }
 
-export async function createSystem(systemData: Partial<System>): Promise<System> {
+export async function createSystem(systemData: Omit<Partial<System>, 'name' | 'project_id'> & { name: string, project_id: string }): Promise<System> {
   const { data, error } = await supabase
     .from('systems')
     .insert(systemData)

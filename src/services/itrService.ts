@@ -37,7 +37,7 @@ export async function getItr(id: string): Promise<ITR | null> {
   return data;
 }
 
-export async function createItr(itrData: Partial<ITR>): Promise<ITR> {
+export async function createItr(itrData: Omit<Partial<ITR>, 'name' | 'subsystem_id'> & { name: string, subsystem_id: string }): Promise<ITR> {
   const { data, error } = await supabase
     .from('itrs')
     .insert(itrData)

@@ -37,7 +37,12 @@ export async function getTestPack(id: string): Promise<TestPack | null> {
   return data;
 }
 
-export async function createTestPack(testPackData: Partial<TestPack>): Promise<TestPack> {
+export async function createTestPack(testPackData: Omit<Partial<TestPack>, 'nombre_paquete' | 'itr_asociado' | 'sistema' | 'subsistema'> & { 
+  nombre_paquete: string, 
+  itr_asociado: string, 
+  sistema: string, 
+  subsistema: string 
+}): Promise<TestPack> {
   const { data, error } = await supabase
     .from('test_packs')
     .insert(testPackData)
@@ -97,7 +102,10 @@ export async function getTagsByTestPack(testPackId: string): Promise<Tag[]> {
   return data || [];
 }
 
-export async function createTag(tagData: Partial<Tag>): Promise<Tag> {
+export async function createTag(tagData: Omit<Partial<Tag>, 'tag_name' | 'test_pack_id'> & { 
+  tag_name: string, 
+  test_pack_id: string 
+}): Promise<Tag> {
   const { data, error } = await supabase
     .from('tags')
     .insert(tagData)

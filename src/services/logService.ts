@@ -25,7 +25,14 @@ export async function logAction(action: string, tagId: string, userId: string): 
     throw error;
   }
   
-  return data;
+  // Map the response to match our interface
+  return {
+    id: data.id,
+    action: data.accion,
+    fecha: data.fecha,
+    tag_id: data.tag_id,
+    usuario_id: data.usuario_id
+  };
 }
 
 export async function getActionLogs(tagId?: string, userId?: string): Promise<LogEntry[]> {
@@ -49,7 +56,14 @@ export async function getActionLogs(tagId?: string, userId?: string): Promise<Lo
     throw error;
   }
   
-  return data || [];
+  // Map the response to match our interface
+  return (data || []).map(item => ({
+    id: item.id,
+    action: item.accion,
+    fecha: item.fecha,
+    tag_id: item.tag_id,
+    usuario_id: item.usuario_id
+  }));
 }
 
 export async function logDatabaseActivity(action: string, tableName: string, recordId: string, details?: any): Promise<void> {

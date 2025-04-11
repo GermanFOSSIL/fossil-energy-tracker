@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { Json } from "@/integrations/supabase/types";
 
 interface ReportRecipient {
   id: string;
@@ -7,24 +8,26 @@ interface ReportRecipient {
   created_at: string;
 }
 
+interface ReportScheduleSettings {
+  daily: {
+    time: string;
+    enabled: boolean;
+  };
+  weekly: {
+    day: string;
+    time: string;
+    enabled: boolean;
+  };
+  monthly: {
+    day: string;
+    time: string;
+    enabled: boolean;
+  };
+}
+
 interface ReportSchedule {
   id: string;
-  settings: {
-    daily: {
-      time: string;
-      enabled: boolean;
-    };
-    weekly: {
-      day: string;
-      time: string;
-      enabled: boolean;
-    };
-    monthly: {
-      day: string;
-      time: string;
-      enabled: boolean;
-    };
-  };
+  settings: ReportScheduleSettings;
   created_at: string;
   updated_at: string;
 }
@@ -83,10 +86,20 @@ export async function getReportSchedule(): Promise<ReportSchedule | null> {
     throw error;
   }
   
-  return data;
+  if (!data) return null;
+  
+  // Parse the JSON settings string into our expected format
+  return {
+    id: data.id,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    settings: typeof data.settings === 'string' 
+      ? JSON.parse(data.settings) 
+      : data.settings as unknown as ReportScheduleSettings
+  };
 }
 
-export async function updateReportSchedule(settings: any): Promise<ReportSchedule> {
+export async function updateReportSchedule(settings: ReportScheduleSettings): Promise<ReportSchedule> {
   // Check if a schedule exists
   const existingSchedule = await getReportSchedule();
   
@@ -104,7 +117,14 @@ export async function updateReportSchedule(settings: any): Promise<ReportSchedul
       throw error;
     }
     
-    return data;
+    return {
+      id: data.id,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+      settings: typeof data.settings === 'string' 
+        ? JSON.parse(data.settings) 
+        : data.settings as unknown as ReportScheduleSettings
+    };
   } else {
     // Create a new schedule
     const { data, error } = await supabase
@@ -118,7 +138,14 @@ export async function updateReportSchedule(settings: any): Promise<ReportSchedul
       throw error;
     }
     
-    return data;
+    return {
+      id: data.id,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+      settings: typeof data.settings === 'string' 
+        ? JSON.parse(data.settings) 
+        : data.settings as unknown as ReportScheduleSettings
+    };
   }
 }
 
