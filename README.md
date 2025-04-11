@@ -1,73 +1,90 @@
-# Welcome to your Lovable project
 
-## Project info
+# Project Management System for Construction
 
-**URL**: https://lovable.dev/projects/3f861590-89c6-415e-80ce-e7ac221e8daa
+A comprehensive web application for managing construction projects, systems, subsystems, ITRs (Inspection and Test Records), and test packs.
 
-## How can I edit this code?
+## Overview
 
-There are several ways of editing your application.
+This project management system is designed specifically for construction and engineering projects with a focus on quality control and inspection processes. It provides a structured way to manage the hierarchy of:
 
-**Use Lovable**
+- Projects
+- Systems
+- Subsystems
+- ITRs (Inspection and Test Records)
+- Test Packs
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3f861590-89c6-415e-80ce-e7ac221e8daa) and start prompting.
+## Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- **User Authentication**: Secure login and role-based access control
+- **Project Management**: Create, view, update, and delete projects
+- **System Hierarchy**: Organize projects into systems, subsystems, and ITRs
+- **Inspection Records**: Track ITRs with progress indicators and signatures
+- **Test Pack Management**: Group related ITRs into test packs
+- **Multi-language Support**: Full internationalization with English and Spanish
+- **Responsive Design**: Works on desktop and mobile devices
 
-**Use your preferred IDE**
+## Technology Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- React with TypeScript
+- Vite for building and development
+- Tailwind CSS for styling
+- Shadcn UI component library
+- Tanstack React Query for data fetching
+- i18next for internationalization
+- Supabase for backend services (authentication, database, storage)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+### Prerequisites
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Node.js (version 16 or higher)
+- npm or yarn
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+2. Navigate to the project directory:
+   ```bash
+   cd project-management-system
+   ```
 
-**Edit a file directly in GitHub**
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-**Use GitHub Codespaces**
+5. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+- `/src`: Source code
+  - `/components`: Reusable UI components
+  - `/hooks`: Custom React hooks
+  - `/pages`: Application pages
+  - `/services`: API services
+  - `/types`: TypeScript type definitions
+  - `/locales`: Internationalization files
+  - `/integrations`: External service integrations
 
-This project is built with:
+## Deployment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The application can be deployed to any static hosting service that supports single-page applications (SPAs).
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/3f861590-89c6-415e-80ce-e7ac221e8daa) and click on Share -> Publish.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Can I connect a custom domain to my Lovable project?
+## Acknowledgements
 
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Icons from [Lucide React](https://lucide.dev/)
+- Charts from [Recharts](https://recharts.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
