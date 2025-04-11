@@ -1,1 +1,55 @@
+
 project_id = "ryiktnbsaqxlegfrrbih"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://localhost"
+
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+
+[auth.email]
+enabled = true
+double_confirm_changes = true
+double_confirm_deletions = true
+
+[auth.sms]
+enabled = true
+
+[analytics]
+enabled = true
+port = 54327
+vector_port = 54328
+backend = "postgres"
+
+[functions]
+[functions.send-email]
+verify_jwt = true
+
+[functions.scheduled-tasks]
+verify_jwt = false

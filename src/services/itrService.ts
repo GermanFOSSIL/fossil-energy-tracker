@@ -53,6 +53,14 @@ export async function createItr(itrData: Omit<Partial<ITR>, 'name' | 'subsystem_
 }
 
 export async function updateItr(id: string, itrData: Partial<ITR>): Promise<ITR> {
+  // Ensure required fields are defined if they're included in the update
+  if ('name' in itrData && itrData.name === undefined) {
+    throw new Error("ITR name cannot be undefined");
+  }
+  if ('subsystem_id' in itrData && itrData.subsystem_id === undefined) {
+    throw new Error("Subsystem ID cannot be undefined");
+  }
+  
   const { data, error } = await supabase
     .from('itrs')
     .update(itrData)

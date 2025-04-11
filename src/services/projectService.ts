@@ -47,6 +47,11 @@ export async function createProject(projectData: Omit<Partial<Project>, 'name'> 
 }
 
 export async function updateProject(id: string, projectData: Partial<Project>): Promise<Project> {
+  // Ensure name is defined if it's included in the update
+  if ('name' in projectData && projectData.name === undefined) {
+    throw new Error("Project name cannot be undefined");
+  }
+  
   const { data, error } = await supabase
     .from('projects')
     .update(projectData)

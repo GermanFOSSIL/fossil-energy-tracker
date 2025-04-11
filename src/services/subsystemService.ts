@@ -53,6 +53,14 @@ export async function createSubsystem(subsystemData: Omit<Partial<Subsystem>, 'n
 }
 
 export async function updateSubsystem(id: string, subsystemData: Partial<Subsystem>): Promise<Subsystem> {
+  // Ensure required fields are defined if they're included in the update
+  if ('name' in subsystemData && subsystemData.name === undefined) {
+    throw new Error("Subsystem name cannot be undefined");
+  }
+  if ('system_id' in subsystemData && subsystemData.system_id === undefined) {
+    throw new Error("System ID cannot be undefined");
+  }
+  
   const { data, error } = await supabase
     .from('subsystems')
     .update(subsystemData)

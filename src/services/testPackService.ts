@@ -58,6 +58,20 @@ export async function createTestPack(testPackData: Omit<Partial<TestPack>, 'nomb
 }
 
 export async function updateTestPack(id: string, testPackData: Partial<TestPack>): Promise<TestPack> {
+  // Ensure required fields are defined if they're included in the update
+  if ('nombre_paquete' in testPackData && testPackData.nombre_paquete === undefined) {
+    throw new Error("TestPack name cannot be undefined");
+  }
+  if ('itr_asociado' in testPackData && testPackData.itr_asociado === undefined) {
+    throw new Error("ITR Asociado cannot be undefined");
+  }
+  if ('sistema' in testPackData && testPackData.sistema === undefined) {
+    throw new Error("Sistema cannot be undefined");
+  }
+  if ('subsistema' in testPackData && testPackData.subsistema === undefined) {
+    throw new Error("Subsistema cannot be undefined");
+  }
+  
   const { data, error } = await supabase
     .from('test_packs')
     .update(testPackData)
@@ -121,6 +135,14 @@ export async function createTag(tagData: Omit<Partial<Tag>, 'tag_name' | 'test_p
 }
 
 export async function updateTag(id: string, tagData: Partial<Tag>): Promise<Tag> {
+  // Ensure required fields are defined if they're included in the update
+  if ('tag_name' in tagData && tagData.tag_name === undefined) {
+    throw new Error("Tag name cannot be undefined");
+  }
+  if ('test_pack_id' in tagData && tagData.test_pack_id === undefined) {
+    throw new Error("Test Pack ID cannot be undefined");
+  }
+  
   const { data, error } = await supabase
     .from('tags')
     .update(tagData)

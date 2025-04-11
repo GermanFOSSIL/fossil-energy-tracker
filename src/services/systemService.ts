@@ -53,6 +53,14 @@ export async function createSystem(systemData: Omit<Partial<System>, 'name' | 'p
 }
 
 export async function updateSystem(id: string, systemData: Partial<System>): Promise<System> {
+  // Ensure required fields are defined if they're included in the update
+  if ('name' in systemData && systemData.name === undefined) {
+    throw new Error("System name cannot be undefined");
+  }
+  if ('project_id' in systemData && systemData.project_id === undefined) {
+    throw new Error("Project ID cannot be undefined");
+  }
+  
   const { data, error } = await supabase
     .from('systems')
     .update(systemData)
